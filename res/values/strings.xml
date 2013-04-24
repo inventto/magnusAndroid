@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ControlePresencaMagnus</string>
+    <string name="action_settings">Settings</string>
+    <string name="codigo_id">Código do Aluno</string>
+    <string name="title_activity_registro_presenca">RegistroPresencaActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>
