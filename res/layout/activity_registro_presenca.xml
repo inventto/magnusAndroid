@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,12 +6,42 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RegistroPresencaActivity" >
+    tools:context=".RegistroPresencaActivity" 
+    android:orientation="vertical"
+    android:gravity="center|top">
+
+    <ImageView
+        android:id="@+id/foto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/saudacao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="@string/saudacao" />
+    
+    <TextView
+        android:id="@+id/horario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/horario" />
+    
+    <TextView
+        android:id="@+id/notice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/notice"
+        android:textColor="#00b050"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error"
+        android:textColor="#FF0000" 
+        android:gravity="center" />
 
-</RelativeLayout>
+</LinearLayout>
