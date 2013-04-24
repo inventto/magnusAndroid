@@ -10,7 +10,9 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +28,8 @@ public class RegistroPresencaActivity extends Activity {
 		
 		String urlFoto = getIntent().getExtras().getString("FOTO");
 		Drawable drawable = LoadImageFromWebOperations("http://magnus.invent.to" + urlFoto);
-		((ImageView)findViewById(R.id.foto)).setImageDrawable(drawable);
+		ImageView iv = ((ImageView)findViewById(R.id.foto));
+		iv.setImageDrawable(drawable);
 		
 		String saudacao = getIntent().getExtras().getString("SAUDACAO");		
 		((TextView)findViewById(R.id.saudacao)).setText(saudacao);
@@ -38,24 +41,45 @@ public class RegistroPresencaActivity extends Activity {
 		
 		String error = getIntent().getExtras().getString("ERROR");
 		((TextView)findViewById(R.id.error)).setText(error.replace("<br/>", "\n"));
-/*		
-		MediaPlayer media = new MediaPlayer();
-		try {
-			String mensagem = getIntent().getExtras().getString("MENSAGEM");
-			String url = "http://translate.google.com/translate_tts?tl=pt&q="+mensagem.replace(' ', '+').replace("!", ".");
-			Uri uri = Uri.parse(url);
-			media.setDataSource(this, uri);
-			media.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			media.prepare();
-		} catch (Exception e) {
-			e.printStackTrace();
+		
+		String musicName = getIntent().getExtras().getString("MENSAGEM");
+		String mensagens[] = musicName.split("|");
+		for (int i = 0; i < mensagens.length; i++) {
+			Log.i("==>MDG",mensagens[i]);
+			executaMensagemSonora(mensagens[i]);	
 		}
-		if (!media.isPlaying()) {
-			media.start();
-		}
- */
 	}
 		
+	private void executaMensagemSonora(String musicName){
+		if (musicName.equals("aguarde_um_instante")) {
+			MediaPlayer.create(this, R.raw.aguarde_um_instante).start();
+		} else if (musicName.equals("voce_esta_atrasado")){
+			MediaPlayer.create(this, R.raw.voce_esta_atrasado).start();
+		}
+		if (musicName.equals("aluno_possui_presenca")){
+			MediaPlayer.create(this, R.raw.aluno_possui_presenca).start();
+		} 
+		if (musicName.equals("bem_vindo")){
+			MediaPlayer.create(this, R.raw.bem_vindo).start();
+		} 
+		if (musicName.equals("codigo_invalido")){
+			MediaPlayer.create(this, R.raw.codigo_invalido).start();
+		}
+		if (musicName.equals("hoje_nao_e_dia_normal_de_aula")){
+			MediaPlayer.create(this, R.raw.hoje_nao_e_dia_normal_de_aula).start();
+		}
+		if (musicName.equals("parabens_semana")){
+			MediaPlayer.create(this, R.raw.parabens_semana).start();
+		} else if (musicName.equals("parabens_mes")){
+			MediaPlayer.create(this, R.raw.parabens_mes).start();
+		} 
+		if (musicName.equals("parabens_pontualidade")){
+			MediaPlayer.create(this, R.raw.parabens_pontualidade).start();
+		}
+		if (musicName.equals("voce_faltou")){
+			MediaPlayer.create(this, R.raw.voce_faltou).start();
+		}
+	}
 	private void contaTempo(){
 		TimerTask ttask = new TimerTask() {
 			
@@ -68,7 +92,7 @@ public class RegistroPresencaActivity extends Activity {
 		};
 		
 		Timer t = new Timer();
-	    t.schedule(ttask, 10000);
+	    t.schedule(ttask, 15000);
 	}
 	
 	private void finishScreen() {

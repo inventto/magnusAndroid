@@ -12,9 +12,10 @@
 
     <ImageView
         android:id="@+id/foto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_launcher"
+        android:scaleType="fitStart" />
 
     <TextView
         android:id="@+id/saudacao"
