@@ -56,14 +56,14 @@ public class RegistroPresencaActivity extends Activity {
 	private void executaMensagensSonora(final String[] mensagens){
 		MediaPlayer mp = null;
 		try {
-			mp = selecionaMusica(mensagens[currentTrack]);
+			mp = getMusica(mensagens[currentTrack]);
 			mp.start();
 			mp.setOnCompletionListener(new OnCompletionListener() {
 				
 				@Override
 				public void onCompletion(MediaPlayer mp) {
 					currentTrack = (currentTrack + 1) % mensagens.length;
-					mp = selecionaMusica(mensagens[currentTrack]);
+					mp = getMusica(mensagens[currentTrack]);
 					mp.start();
 				}
 			});
@@ -73,22 +73,16 @@ public class RegistroPresencaActivity extends Activity {
 		}
 	}
 		
-	private MediaPlayer selecionaMusica(String musicName) {
+	private MediaPlayer getMusica(String musicName) {
 		MediaPlayer mp = null;
 		if (musicName.equals("aguarde_um_instante")) {
 			mp = MediaPlayer.create(this, R.raw.aguarde_um_instante);
 		} else if (musicName.equals("voce_esta_atrasado")){
 			mp = MediaPlayer.create(this, R.raw.voce_esta_atrasado);
 		}
-		if (musicName.equals("aluno_possui_presenca")){
-			mp = MediaPlayer.create(this, R.raw.aluno_possui_presenca);
-		} 
 		if (musicName.equals("bem_vindo")){
 			mp = MediaPlayer.create(this, R.raw.bem_vindo);
 		} 
-		if (musicName.equals("codigo_invalido")){
-			mp = MediaPlayer.create(this, R.raw.codigo_invalido);
-		}
 		if (musicName.equals("hoje_nao_e_dia_normal_de_aula")){
 			mp = MediaPlayer.create(this, R.raw.hoje_nao_e_dia_normal_de_aula);
 		}
@@ -117,7 +111,7 @@ public class RegistroPresencaActivity extends Activity {
 		};
 		
 		Timer t = new Timer();
-	    t.schedule(ttask, 10000);
+	    t.schedule(ttask, 13000);
 	}
 	
 	private void finishScreen() {

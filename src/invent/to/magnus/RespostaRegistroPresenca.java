@@ -17,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,7 +53,9 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 			
 			String mensagens[] = response.split(";");			
 			if (mensagens.length == 1){
+				mensagens = mensagens[0].replace("|", ";").split(";");
 				showMessage(mensagens[0]);
+				executaMensagemSonora(mensagens[1]);
 			} else {
 				Intent intent = new Intent(context, RegistroPresencaActivity.class);
 				intent.putExtra("SAUDACAO", mensagens[0]);
@@ -70,6 +73,14 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 			showMessage("==[IOEx:\n" + e.getMessage());
 		}
 		return null;
+	}
+	
+	private void executaMensagemSonora(String musicName) {
+		if (musicName.equals("aluno_possui_presenca")){
+			MediaPlayer.create(context, R.raw.aluno_possui_presenca).start();
+		} else if (musicName.equals("codigo_invalido")){
+			MediaPlayer.create(context, R.raw.codigo_invalido).start();
+		}
 	}
 	
 	protected void showMessage(final String value) {

@@ -9,5 +9,6 @@
     <string name="notice">notice</string>
     <string name="error">error</string>
     <string name="horario">hora_de_chegada</string>
+    <string name="registrar">Registrar</string>
 
 </resources>
