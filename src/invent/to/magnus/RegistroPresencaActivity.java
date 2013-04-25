@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RegistroPresencaActivity extends Activity {
+	
+	private int currentTrack = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,42 +46,64 @@ public class RegistroPresencaActivity extends Activity {
 		((TextView)findViewById(R.id.error)).setText(error.replace("<br/>", "\n"));
 		
 		String musicName = getIntent().getExtras().getString("MENSAGEM");
-		String mensagens[] = musicName.split("|");
-		for (int i = 0; i < mensagens.length; i++) {
-			Log.i("==>MDG",mensagens[i]);
-			executaMensagemSonora(mensagens[i]);	
+		musicName = musicName.replace("|", ";");
+		
+		String mensagens[] = musicName.split(";");
+				
+		executaMensagensSonora(mensagens);
+	}
+	
+	private void executaMensagensSonora(final String[] mensagens){
+		MediaPlayer mp = null;
+		try {
+			mp = selecionaMusica(mensagens[currentTrack]);
+			mp.start();
+			mp.setOnCompletionListener(new OnCompletionListener() {
+				
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					currentTrack = (currentTrack + 1) % mensagens.length;
+					mp = selecionaMusica(mensagens[currentTrack]);
+					mp.start();
+				}
+			});
+		} catch (IllegalStateException e) {
+			Log.i("==[ExecutaMsgSonExcept", e.getMessage());
+			e.printStackTrace();
 		}
 	}
 		
-	private void executaMensagemSonora(String musicName){
+	private MediaPlayer selecionaMusica(String musicName) {
+		MediaPlayer mp = null;
 		if (musicName.equals("aguarde_um_instante")) {
-			MediaPlayer.create(this, R.raw.aguarde_um_instante).start();
+			mp = MediaPlayer.create(this, R.raw.aguarde_um_instante);
 		} else if (musicName.equals("voce_esta_atrasado")){
-			MediaPlayer.create(this, R.raw.voce_esta_atrasado).start();
+			mp = MediaPlayer.create(this, R.raw.voce_esta_atrasado);
 		}
 		if (musicName.equals("aluno_possui_presenca")){
-			MediaPlayer.create(this, R.raw.aluno_possui_presenca).start();
+			mp = MediaPlayer.create(this, R.raw.aluno_possui_presenca);
 		} 
 		if (musicName.equals("bem_vindo")){
-			MediaPlayer.create(this, R.raw.bem_vindo).start();
+			mp = MediaPlayer.create(this, R.raw.bem_vindo);
 		} 
 		if (musicName.equals("codigo_invalido")){
-			MediaPlayer.create(this, R.raw.codigo_invalido).start();
+			mp = MediaPlayer.create(this, R.raw.codigo_invalido);
 		}
 		if (musicName.equals("hoje_nao_e_dia_normal_de_aula")){
-			MediaPlayer.create(this, R.raw.hoje_nao_e_dia_normal_de_aula).start();
+			mp = MediaPlayer.create(this, R.raw.hoje_nao_e_dia_normal_de_aula);
 		}
 		if (musicName.equals("parabens_semana")){
-			MediaPlayer.create(this, R.raw.parabens_semana).start();
+			mp = MediaPlayer.create(this, R.raw.parabens_semana);
 		} else if (musicName.equals("parabens_mes")){
-			MediaPlayer.create(this, R.raw.parabens_mes).start();
+			mp = MediaPlayer.create(this, R.raw.parabens_mes);
 		} 
 		if (musicName.equals("parabens_pontualidade")){
-			MediaPlayer.create(this, R.raw.parabens_pontualidade).start();
+			mp = MediaPlayer.create(this, R.raw.parabens_pontualidade);
 		}
 		if (musicName.equals("voce_faltou")){
-			MediaPlayer.create(this, R.raw.voce_faltou).start();
+			mp = MediaPlayer.create(this, R.raw.voce_faltou);
 		}
+		return mp;
 	}
 	private void contaTempo(){
 		TimerTask ttask = new TimerTask() {
@@ -92,7 +117,7 @@ public class RegistroPresencaActivity extends Activity {
 		};
 		
 		Timer t = new Timer();
-	    t.schedule(ttask, 15000);
+	    t.schedule(ttask, 10000);
 	}
 	
 	private void finishScreen() {
