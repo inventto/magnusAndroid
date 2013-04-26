@@ -18,15 +18,14 @@ import android.widget.EditText;
 import com.j256.ormlite.dao.Dao;
 
 public class MagnusPresencaActivity extends Activity {
-	private Dao<Aluno, Integer> alunoDao;
-	
+	/*private Dao<Aluno, Integer> alunoDao;	
 	public MagnusPresencaActivity() {
 		try {
 			alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +54,7 @@ public class MagnusPresencaActivity extends Activity {
 
 	private void verifAlunosRegistrados() {
 		try {
+			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			List<Aluno> listAluno = alunoDao.queryForAll();
 			for(Aluno aluno : listAluno){
 				new RespostaRegistroPresenca(this).execute(String.valueOf(aluno.getCodigo()), String.valueOf(aluno.getDataRegistro().getTime()));
@@ -70,6 +70,7 @@ public class MagnusPresencaActivity extends Activity {
 		aluno.setCodigo(codigo);
 		aluno.setDataRegistro(new Date());
 		try {
+			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			alunoDao.create(aluno);
 		} catch (SQLException e) {
 			e.printStackTrace();

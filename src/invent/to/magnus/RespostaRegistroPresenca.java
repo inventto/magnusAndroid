@@ -39,7 +39,9 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("id", params[0]));	
 			if (params.length == 2) {
-				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));	
+				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));
+				Log.i("==>PARAMS[DATA]", params[1]);
+				return null;
 			}
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			

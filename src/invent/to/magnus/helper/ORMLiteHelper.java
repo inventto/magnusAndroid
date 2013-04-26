@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -21,8 +20,8 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
     private Dao<Aluno, Integer> alunoDao = null;
     private RuntimeExceptionDao<Aluno, Integer> alunoRuntimeDao = null;
     
-    public ORMLiteHelper(Context context, CursorFactory factory) {
-		super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public ORMLiteHelper(Context context) {
+		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
 	@Override
@@ -48,7 +47,7 @@ public class ORMLiteHelper extends OrmLiteSqliteOpenHelper{
 	
 	public static ORMLiteHelper getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new ORMLiteHelper(context.getApplicationContext(), null);
+            mInstance = new ORMLiteHelper(context.getApplicationContext());
         }
         return mInstance;
     }
