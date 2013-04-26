@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,7 +54,6 @@ public class RegistroPresencaActivity extends Activity {
 	
 	private void executaMensagensSonora(final String[] mensagens){
 		MediaPlayer mp = null;
-		try {
 			mp = getMusica(mensagens[currentTrack]);
 			mp.start();
 			mp.setOnCompletionListener(new OnCompletionListener() {
@@ -67,10 +65,6 @@ public class RegistroPresencaActivity extends Activity {
 					mp.start();
 				}
 			});
-		} catch (IllegalStateException e) {
-			Log.i("==[ExecutaMsgSonExcept", e.getMessage());
-			e.printStackTrace();
-		}
 	}
 		
 	private MediaPlayer getMusica(String musicName) {
