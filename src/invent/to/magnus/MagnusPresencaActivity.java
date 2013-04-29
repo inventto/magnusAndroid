@@ -10,23 +10,15 @@ import java.util.List;
 import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
 public class MagnusPresencaActivity extends Activity {
-	/*private Dao<Aluno, Integer> alunoDao;	
-	public MagnusPresencaActivity() {
-		try {
-			alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,11 +36,15 @@ public class MagnusPresencaActivity extends Activity {
 		EditText et = (EditText) findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
 		
-		if (wifiIsConnected()) {
-			verifAlunosRegistrados();
-			new RespostaRegistroPresenca(this).execute(codigo);	
+		if (!codigo.equals("") && Integer.parseInt(codigo) > 0) {
+			if (wifiIsConnected()) {
+				verifAlunosRegistrados();
+				new RespostaRegistroPresenca(this).execute(codigo);	
+			} else {
+				inserirAluno(Integer.parseInt(codigo));
+			}
 		} else {
-			inserirAluno(Integer.parseInt(codigo));
+			Toast.makeText(this, "Código do aluno inválido!", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -72,6 +68,7 @@ public class MagnusPresencaActivity extends Activity {
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			alunoDao.create(aluno);
+			Toast.makeText(this, "Não há conexão com a internet.\nAssim que a mesma for estabelecida registraremos sua presença!", Toast.LENGTH_LONG).show();	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -81,6 +78,7 @@ public class MagnusPresencaActivity extends Activity {
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();				
 	}
+	
 	/* Exemplos:
 	 * Lugar lugar = new lugar();
 	lugar.nome = "Aracaju";
