@@ -10,6 +10,8 @@ import java.util.List;
 import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -18,11 +20,24 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 
 public class MagnusPresencaActivity extends Activity {
-	
+
+	private Handler handler;
+	private Thread thread;
+
+	public synchronized Handler getHandler(){
+		return this.handler;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_magnus_presenca);
+		
+		if (wifiIsConnected()) {
+			this.handler = new Handler();
+			thread = new Thread(new MarcarFaltaRunnable(this));
+			thread.start();	
+		}
 	}
 
 	@Override
@@ -31,11 +46,11 @@ public class MagnusPresencaActivity extends Activity {
 		getMenuInflater().inflate(R.menu.magnus_presenca, menu);
 		return true;	
 	}
-	
+
 	public void registrar(View v) {
 		EditText et = (EditText) findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
-		
+
 		if (!codigo.equals("") && Integer.parseInt(codigo) > 0) {
 			if (wifiIsConnected()) {
 				verifAlunosRegistrados();
@@ -73,12 +88,12 @@ public class MagnusPresencaActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private boolean wifiIsConnected() {
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();				
 	}
-	
+
 	/* Exemplos:
 	 * Lugar lugar = new lugar();
 	lugar.nome = "Aracaju";
@@ -93,5 +108,5 @@ public class MagnusPresencaActivity extends Activity {
 	lugarDao.queryForAll();
 	// SELECT * FROM Lugar where id = lugar.id;
 	lugarDao.queryForId(lugar);
-	*/
+	 */
 }
