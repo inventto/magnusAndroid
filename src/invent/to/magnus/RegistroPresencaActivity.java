@@ -98,8 +98,6 @@ public class RegistroPresencaActivity extends Activity {
 			
 			@Override
 			public void run() {
-				Intent intent = new Intent(RegistroPresencaActivity.this, MagnusPresencaActivity.class);
-				startActivity(intent);
 				finishScreen();
 			}
 		};

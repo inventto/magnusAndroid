@@ -39,11 +39,12 @@ public class MagnusPresencaActivity extends Activity {
 		getMenuInflater().inflate(R.menu.magnus_presenca, menu);
 		return true;	
 	}
-	
+
 	public void registrar(View v) {
 		EditText et = (EditText) findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
-		
+		et.setText("");
+
 		if (wifiIsConnected()) {
 			verifAlunosRegistrados();
 			new RespostaRegistroPresenca(this).execute(codigo);	
@@ -76,7 +77,7 @@ public class MagnusPresencaActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private boolean wifiIsConnected() {
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();				
@@ -95,5 +96,5 @@ public class MagnusPresencaActivity extends Activity {
 	lugarDao.queryForAll();
 	// SELECT * FROM Lugar where id = lugar.id;
 	lugarDao.queryForId(lugar);
-	*/
+	 */
 }
