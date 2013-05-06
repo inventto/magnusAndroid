@@ -10,46 +10,56 @@ import java.util.List;
 import android.app.Activity;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
 public class MagnusPresencaActivity extends Activity {
-	/*private Dao<Aluno, Integer> alunoDao;	
-	public MagnusPresencaActivity() {
-		try {
-			alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}*/
+
+	private Handler handler;
+	private Thread thread;
+
+	public synchronized Handler getHandler(){
+		return this.handler;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_magnus_presenca);
+
+		if (wifiIsConnected()) {
+			this.handler = new Handler();
+			thread = new Thread(new MarcarFaltaRunnable(this));
+			thread.start();
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.magnus_presenca, menu);
-		return true;	
+		return true;
 	}
 
 	public void registrar(View v) {
 		EditText et = (EditText) findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
 		et.setText("");
-
-		if (wifiIsConnected()) {
-			verifAlunosRegistrados();
-			new RespostaRegistroPresenca(this).execute(codigo);	
+		if (!codigo.equals("") && Integer.parseInt(codigo) > 0) {
+			if (wifiIsConnected()) {
+				verifAlunosRegistrados();
+				new RespostaRegistroPresenca(this).execute(codigo);
+			} else {
+				inserirAluno(Integer.parseInt(codigo));
+			}
 		} else {
-			inserirAluno(Integer.parseInt(codigo));
+			Toast.makeText(this, "Código do aluno inválido!", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -73,6 +83,7 @@ public class MagnusPresencaActivity extends Activity {
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			alunoDao.create(aluno);
+			Toast.makeText(this, "Não há conexão com a internet.\nAssim que a mesma for estabelecida registraremos sua presença!", Toast.LENGTH_LONG).show();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -80,12 +91,13 @@ public class MagnusPresencaActivity extends Activity {
 
 	private boolean wifiIsConnected() {
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();				
+		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
 	}
+
 	/* Exemplos:
 	 * Lugar lugar = new lugar();
 	lugar.nome = "Aracaju";
-	// INSERT INTO lugar VALUES ('Aracaju'); 	
+	// INSERT INTO lugar VALUES ('Aracaju');
 	lugarDao.create(lugar);
 	lugar.nome = "Sergipe";
 	// UPDATE lugar SET nome = 'Sergipe' WHERE id = 1;
