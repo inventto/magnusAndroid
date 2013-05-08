@@ -8,7 +8,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -20,20 +19,21 @@ import android.widget.TextView;
 public class RegistroPresencaActivity extends Activity {
 	
 	private int currentTrack = 0;
+	private String mensagens[];
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_registro_presenca);
 		
-		contaTempo();
+		voltarTelaPrincipal();
 		
 		String urlFoto = getIntent().getExtras().getString("FOTO");
 		Drawable drawable = LoadImageFromWebOperations("http://magnus.invent.to" + urlFoto);
 		ImageView iv = ((ImageView)findViewById(R.id.foto));
 		iv.setImageDrawable(drawable);
 		
-		String saudacao = getIntent().getExtras().getString("SAUDACAO");		
+		String saudacao = getIntent().getExtras().getString("SAUDACAO");
 		((TextView)findViewById(R.id.saudacao)).setText(saudacao);
 		
 		((TextView)findViewById(R.id.horario)).setText("Chegada: " + new SimpleDateFormat("HH:mm").format(new GregorianCalendar().getTime()) + "\n");
@@ -47,24 +47,31 @@ public class RegistroPresencaActivity extends Activity {
 		String musicName = getIntent().getExtras().getString("MENSAGEM");
 		musicName = musicName.replace("|", ";");
 		
-		String mensagens[] = musicName.split(";");
-				
+		mensagens = musicName.split(";");
 		executaMensagensSonora(mensagens);
+	}
+	
+	private OnCompletionListener onCompletionListener(){
+		OnCompletionListener comp = new OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				currentTrack = currentTrack + 1;
+				if (currentTrack < mensagens.length) {
+					mp = getMusica(mensagens[currentTrack]);
+					mp.start();
+					mp.setOnCompletionListener(onCompletionListener());
+				}
+			}
+		};
+		return comp; 
 	}
 	
 	private void executaMensagensSonora(final String[] mensagens){
 		MediaPlayer mp = null;
-			mp = getMusica(mensagens[currentTrack]);
-			mp.start();
-			mp.setOnCompletionListener(new OnCompletionListener() {
-				
-				@Override
-				public void onCompletion(MediaPlayer mp) {
-					currentTrack = (currentTrack + 1) % mensagens.length;
-					mp = getMusica(mensagens[currentTrack]);
-					mp.start();
-				}
-			});
+		mp = getMusica(mensagens[currentTrack]);
+		mp.start();
+		mp.setOnCompletionListener(onCompletionListener());
 	}
 		
 	private MediaPlayer getMusica(String musicName) {
@@ -91,9 +98,15 @@ public class RegistroPresencaActivity extends Activity {
 		if (musicName.equals("voce_faltou")){
 			mp = MediaPlayer.create(this, R.raw.voce_faltou);
 		}
+		if (musicName.equals("fora_de_horario")) {
+			mp = MediaPlayer.create(this, R.raw.fora_de_horario);
+		}
+		if (musicName.equals("aula_de_reposicao")) {
+			mp = MediaPlayer.create(this, R.raw.aula_de_resposicao);
+		}
 		return mp;
 	}
-	private void contaTempo(){
+	private void voltarTelaPrincipal(){
 		TimerTask ttask = new TimerTask() {
 			
 			@Override
