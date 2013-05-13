@@ -1,6 +1,7 @@
 package invent.to.magnus;
 
 import java.io.IOException;
+import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,35 +30,34 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 	public RespostaRegistroPresenca(Activity context){
 		this.context = context;
 	}
-	
+
 	@Override
 	protected Void doInBackground(String... params) {		
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost("http://magnus.invent.to/registro_presenca/registro_android");
-
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("id", params[0]));
-			
+
 			if (params.length == 2) {
 				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));			
 			}
-			
+
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			
+
 			HttpResponse httpResponse = httpclient.execute(httppost);
-		    
+
 			if (params.length == 2) return null;
-		    	
+
 			HttpEntity responseEntity = httpResponse.getEntity();	
-			
+
 			String response = null;			
 			if(responseEntity != null) {
-			  response = EntityUtils.toString(responseEntity);
+				response = EntityUtils.toString(responseEntity);
 			}
-			
+
 			Log.i("=======[", response);
-			
+
 			String mensagens[] = response.split(";");			
 			if (mensagens.length == 1){
 				mensagens = mensagens[0].replace("|", ";").split(";");
@@ -73,15 +73,16 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 				intent.putExtra("MENSAGEM", mensagens[5]);
 				context.startActivity(intent);
 			}
-			
+
 		} catch (ClientProtocolException e) {
 			showMessage("==[ClientProtocolEx:\n" + e.getMessage());
 		} catch (IOException e) {
 			showMessage("==[IOEx:\n" + e.getMessage());
 		}
+
 		return null;
 	}
-	
+
 	private void executaMensagemSonora(String musicName) {
 		if (musicName.equals("aluno_possui_presenca")){
 			MediaPlayer.create(context, R.raw.aluno_possui_presenca).start();
@@ -89,14 +90,14 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 			MediaPlayer.create(context, R.raw.codigo_invalido).start();
 		}
 	}
-	
+
 	protected void showMessage(final String value) {
 		context.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				Toast.makeText(context, value, Toast.LENGTH_LONG).show();
+				((MagnusPresencaActivity) context).setEnabledButton(true);
 			}
 		});
 	}
-	
 }

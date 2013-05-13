@@ -8,12 +8,14 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,10 +31,21 @@ public class MagnusPresencaActivity extends Activity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		setEnabledButton(true);
+		
+		displayKeyboard();
+	}
+	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_magnus_presenca);
-
+		
+		onResume();
+		
 		if (wifiIsConnected()) {
 			this.handler = new Handler();
 			thread = new Thread(new MarcarFaltaRunnable(this));
@@ -46,14 +59,21 @@ public class MagnusPresencaActivity extends Activity {
 		getMenuInflater().inflate(R.menu.magnus_presenca, menu);
 		return true;
 	}
+	
+	public void setEnabledButton(boolean enabled) {
+		Button but = (Button)findViewById(R.id.btnRegistrar);
+		but.setEnabled(enabled);
+	}
 
 	public void registrar(View v) {
 		EditText et = (EditText) findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
 		et.setText("");
+		
 		if (!codigo.equals("") && Integer.parseInt(codigo) > 0) {
 			if (wifiIsConnected()) {
 				verifAlunosRegistrados();
+				setEnabledButton(false);
 				new RespostaRegistroPresenca(this).execute(codigo);
 			} else {
 				inserirAluno(Integer.parseInt(codigo));
@@ -62,7 +82,7 @@ public class MagnusPresencaActivity extends Activity {
 			Toast.makeText(this, "Código do aluno inválido!", Toast.LENGTH_LONG).show();
 		}
 	}
-
+	
 	private void verifAlunosRegistrados() {
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
@@ -92,6 +112,18 @@ public class MagnusPresencaActivity extends Activity {
 	private boolean wifiIsConnected() {
 		ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		return connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+	}
+	
+	private void displayKeyboard(){
+		final EditText codigo = (EditText)findViewById(R.id.codigo);
+		codigo.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				keyboard.showSoftInput(codigo, 0);
+			}
+		}, 200);
 	}
 
 	/* Exemplos:

@@ -21,13 +21,15 @@
         android:id="@+id/saudacao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/saudacao" />
+        android:text="@string/saudacao" 
+        android:textSize="20sp" />
     
     <TextView
         android:id="@+id/horario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/horario" />
+        android:text="@string/horario" 
+        android:textSize="20sp" />
     
     <TextView
         android:id="@+id/notice"
@@ -35,7 +37,8 @@
         android:layout_height="wrap_content"
         android:text="@string/notice"
         android:textColor="#00b050"
-        android:gravity="center" />
+        android:gravity="center"
+        android:textSize="20sp" />
     
     <TextView
         android:id="@+id/error"
@@ -43,6 +46,7 @@
         android:layout_height="wrap_content"
         android:text="@string/error"
         android:textColor="#FF0000" 
-        android:gravity="center" />
+        android:gravity="center"
+        android:textSize="20sp" />
 
 </LinearLayout>
