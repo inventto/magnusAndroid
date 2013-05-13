@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +46,8 @@ public class MagnusPresencaActivity extends Activity {
 		setContentView(R.layout.activity_magnus_presenca);
 		
 		onResume();
+		
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		
 		if (wifiIsConnected()) {
 			this.handler = new Handler();
@@ -123,7 +126,7 @@ public class MagnusPresencaActivity extends Activity {
 				InputMethodManager keyboard = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				keyboard.showSoftInput(codigo, 0);
 			}
-		}, 200);
+		}, 50);
 	}
 
 	/* Exemplos:
