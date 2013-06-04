@@ -54,6 +54,8 @@ public class MagnusPresencaActivity extends Activity {
 			thread = new Thread(new MarcarFaltaRunnable(this));
 			thread.start();
 		}
+		
+		new VerifyVersionAndUpdate(this);
 	}
 
 	@Override
