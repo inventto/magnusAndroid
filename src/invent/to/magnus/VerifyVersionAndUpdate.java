@@ -38,7 +38,6 @@ public class VerifyVersionAndUpdate {
 	private Boolean checkInstalledApp(int versionCode) 
     {
         Boolean isInstalled = false;
-
 		PackageInfo p = null;
 		try {
 			p = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -89,7 +88,8 @@ public class VerifyVersionAndUpdate {
 
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
 			c.setRequestMethod("GET");
-			c.setDoOutput(true);
+			c.setDoInput(true);
+//			c.setDoOutput(true);
 			c.connect();
 
 			InputStream in = c.getInputStream();
@@ -148,7 +148,7 @@ public class VerifyVersionAndUpdate {
 
             	HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
     			c.setRequestMethod("GET");
-    			c.setDoOutput(true);
+    			c.setDoInput(true);
     			c.connect();
 
     			outputFile.deleteOnExit();
