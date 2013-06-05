@@ -8,8 +8,11 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="8" />
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INSTALL_PACKAGES" tools:ignore="ProtectedPermissions"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	
     <application
         android:allowBackup="true"
@@ -29,6 +32,12 @@
             android:name="invent.to.magnus.RegistroPresencaActivity"
             android:label="@string/title_activity_registro_presenca" >
         </activity>
+        <receiver android:name=".StartMonitorFuncionalReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
