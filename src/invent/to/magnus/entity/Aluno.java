@@ -10,7 +10,7 @@ public class Aluno {
 	@DatabaseField(generatedId = true)
 	private int id;
 	@DatabaseField(canBeNull = false)
-	private int codigo;
+	private String codigo;
 	@DatabaseField(canBeNull = false)
 	private Date dataRegistro;
 	
@@ -22,11 +22,11 @@ public class Aluno {
 		this.id = id;
 	}
 
-	public int getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
 	
-	public void setCodigo(int codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 

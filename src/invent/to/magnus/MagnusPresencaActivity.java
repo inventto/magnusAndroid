@@ -75,13 +75,13 @@ public class MagnusPresencaActivity extends Activity {
 		String codigo = et.getText().toString();
 		et.setText("");
 		
-		if (!codigo.equals("") && Integer.parseInt(codigo) > 0) {
+		if (!codigo.equals("") && Long.parseLong(codigo) > 0 && codigo.length() == 6) {
 			if (wifiIsConnected()) {
 				verifAlunosRegistrados();
 				setEnabledButton(false);
 				new RespostaRegistroPresenca(this).execute(codigo);
 			} else {
-				inserirAluno(Integer.parseInt(codigo));
+				inserirAluno(codigo);
 			}
 		} else {
 			Toast.makeText(this, "Código do aluno inválido!", Toast.LENGTH_LONG).show();
@@ -93,7 +93,7 @@ public class MagnusPresencaActivity extends Activity {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			List<Aluno> listAluno = alunoDao.queryForAll();
 			for(Aluno aluno : listAluno){
-				new RespostaRegistroPresenca(this).execute(String.valueOf(aluno.getCodigo()), String.valueOf(aluno.getDataRegistro().getTime()));
+				new RespostaRegistroPresenca(this).execute(aluno.getCodigo(), String.valueOf(aluno.getDataRegistro().getTime()));
 				alunoDao.delete(aluno);
 			}
 		} catch (SQLException e) {
@@ -101,7 +101,7 @@ public class MagnusPresencaActivity extends Activity {
 		}
 	}
 
-	private void inserirAluno(int codigo) {
+	private void inserirAluno(String codigo) {
 		Aluno aluno = new Aluno();
 		aluno.setCodigo(codigo);
 		aluno.setDataRegistro(new Date());

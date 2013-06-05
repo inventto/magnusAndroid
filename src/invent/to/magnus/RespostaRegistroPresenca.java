@@ -37,7 +37,7 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 		HttpPost httppost = new HttpPost("http://magnus.invent.to/registro_presenca/registro_android");
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("id", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("codigo", params[0]));
 
 			if (params.length == 2) {
 				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));			
