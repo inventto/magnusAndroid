@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -16,7 +15,7 @@ import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class RegistroPresencaActivity extends Activity {
+public class RegistroPresencaActivity extends GlobalActivity {
 	
 	private int currentTrack = 0;
 	private String mensagens[];

@@ -7,13 +7,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -22,7 +23,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
-public class MagnusPresencaActivity extends Activity {
+public class MagnusPresencaActivity extends GlobalActivity {
 
 	private Handler handler;
 	private Thread thread;
@@ -43,11 +44,17 @@ public class MagnusPresencaActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		setContentView(R.layout.activity_magnus_presenca);
 		
 		onResume();
 		
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
 		if (wifiIsConnected()) {
 			this.handler = new Handler();
@@ -100,7 +107,21 @@ public class MagnusPresencaActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-
+		
+	public void showInfo(View v) {
+		final Dialog dialog = new Dialog(this);
+        dialog.setTitle("Sobre");
+        dialog.setContentView(R.layout.sobre_dialog);
+        Button btOk = (Button)dialog.findViewById(R.id_dialog_sobre.btOk);
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }   
+        });
+        dialog.show();
+	}
+	
 	private void inserirAluno(String codigo) {
 		Aluno aluno = new Aluno();
 		aluno.setCodigo(codigo);
