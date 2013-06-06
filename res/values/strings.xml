@@ -3,7 +3,7 @@
 
     <string name="app_name">Controle de Presenças</string>
     <string name="action_settings">Settings</string>
-    <string name="codigo_id">Código de Acesso</string>
+    <string name="codigo_acesso">Código de Acesso</string>
     <string name="title_activity_registro_presenca">Informações da Presença</string>
     <string name="saudacao">saudacao</string>
     <string name="notice">notice</string>

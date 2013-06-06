@@ -12,6 +12,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -63,6 +65,27 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		}
 		
 		new VerifyVersionAndUpdate(this);
+		
+		codigoOnChanged();
+	}
+	
+	private void codigoOnChanged() {
+		EditText codigo = (EditText)findViewById(R.id.codigo);
+		codigo.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				activity();
+			}
+		});
 	}
 
 	@Override

@@ -15,9 +15,9 @@ public class GlobalActivity extends Activity {
 	CountDownTimer verificaAtividade;
 
 	static final int MAX_BRIGHTNESS = 80;
-	static final int NORMAL_BRIGHTNESS = 45;
-	static final int MIN_BRIGHTNESS = 16;
-	static final int TIME_TO_DARK_DISPLAY = 60000;
+	static final int NORMAL_BRIGHTNESS = 60;
+	static final int MIN_BRIGHTNESS = 55;
+	static final int TIME_TO_DARK_DISPLAY = 30000;
 	static final int TIME_TO_OFF_DISPLAY = 180000;
 
 	public void activity() {
