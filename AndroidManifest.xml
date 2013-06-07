@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name="invent.to.magnus.RegistroPresencaActivity"
-            android:label="@string/title_activity_registro_presenca" >
+            android:label="@string/title_activity_registro_presenca" 
+            android:screenOrientation="portrait">
         </activity>
         <receiver android:name=".StartMonitorFuncionalReceiver" >
             <intent-filter>

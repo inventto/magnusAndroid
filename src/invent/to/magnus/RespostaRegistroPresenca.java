@@ -1,7 +1,6 @@
 package invent.to.magnus;
 
 import java.io.IOException;
-import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -90,7 +90,7 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 			MediaPlayer.create(context, R.raw.codigo_invalido).start();
 		}
 	}
-
+	
 	protected void showMessage(final String value) {
 		context.runOnUiThread(new Runnable() {
 			@Override
