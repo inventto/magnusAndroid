@@ -7,6 +7,8 @@
 
 package invent.to.magnus;
 
+import android.net.Uri;
+
 public final class R {
     public static final class attr {
     }
@@ -64,6 +66,8 @@ public final class R {
         public static final int parabens_semana=0x7f040009;
         public static final int voce_esta_atrasado=0x7f04000a;
         public static final int voce_faltou=0x7f04000b;
+		public static final Uri fora_de_horario_matricula = null;
+		public static final Uri fora_do_dia_normal_de_aula = null;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
