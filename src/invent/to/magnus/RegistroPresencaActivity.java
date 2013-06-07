@@ -98,7 +98,10 @@ public class RegistroPresencaActivity extends GlobalActivity {
 			mp = MediaPlayer.create(this, R.raw.voce_faltou);
 		}
 		if (musicName.equals("fora_de_horario")) {
-			mp = MediaPlayer.create(this, R.raw.fora_de_horario);
+			mp = MediaPlayer.create(this, R.raw.fora_de_horario_matricula);
+		}
+		if (musicName.equals("dia_errado")) {
+			mp = MediaPlayer.create(this, R.raw.fora_do_dia_normal_de_aula);
 		}
 		if (musicName.equals("aula_de_reposicao")) {
 			mp = MediaPlayer.create(this, R.raw.aula_de_resposicao);
