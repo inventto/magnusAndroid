@@ -105,7 +105,7 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		String codigo = et.getText().toString();
 		et.setText("");
 		
-		if (!codigo.equals("") && Long.parseLong(codigo) > 0 && codigo.length() == 6) {
+		if (!codigo.equals("") && Long.parseLong(codigo) > 0) {
 			if (wifiIsConnected()) {
 				verifAlunosRegistrados();
 				setEnabledButton(false);
