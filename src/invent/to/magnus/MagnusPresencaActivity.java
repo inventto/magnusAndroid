@@ -14,13 +14,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
@@ -34,7 +37,7 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		return this.handler;
 	}
 
-	@Override
+	@Override	
 	protected void onResume() {
 		super.onResume();
 		
@@ -69,6 +72,8 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		codigoOnChanged();
 	}
 	
+	
+	
 	private void codigoOnChanged() {
 		EditText codigo = (EditText)findViewById(R.id.codigo);
 		codigo.addTextChangedListener(new TextWatcher() {
@@ -80,10 +85,21 @@ public class MagnusPresencaActivity extends GlobalActivity {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 				activity();
+			}
+		});
+		codigo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == 2) {
+					registrar(v);
+					displayKeyboard();
+				}
+				return false;
 			}
 		});
 	}
