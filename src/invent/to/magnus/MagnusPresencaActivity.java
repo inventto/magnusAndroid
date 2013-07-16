@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 
 public class MagnusPresencaActivity extends GlobalActivity {
+	
 
 	private Handler handler;
 	private Thread thread;

@@ -81,7 +81,7 @@ public class VerifyVersionAndUpdate {
 	}
 
 	public int getVersionFromServer() {
-		String BuildVersionPath = "http://magnus.invent.to/Version_"
+		String BuildVersionPath = GlobalActivity.ADDRESS + "/Version_"
 				+ apkName() + ".txt";
 		URL u;
 		try {
@@ -143,7 +143,7 @@ public class VerifyVersionAndUpdate {
 			int count;
 
 			try {
-				String url = "http://magnus.invent.to/" + apkName();
+				String url = GlobalActivity.ADDRESS + "/" + apkName();
 				File path = DIRECTORY;
 				File outputFile = new File(path, apkName());
 

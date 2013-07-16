@@ -17,7 +17,6 @@ import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -33,8 +32,8 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 
 	@Override
 	protected Void doInBackground(String... params) {		
-		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost("http://magnus.invent.to/registro_presenca/registro_android");
+		HttpClient httpclient = new DefaultHttpClient();		
+		HttpPost httppost = new HttpPost(GlobalActivity.ADDRESS + "/registro_presenca/registro_android");
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("codigo", params[0]));

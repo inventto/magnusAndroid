@@ -58,15 +58,16 @@ public final class R {
         public static final int aula_de_resposicao=0x7f040002;
         public static final int bem_vindo=0x7f040003;
         public static final int codigo_invalido=0x7f040004;
-        public static final int fora_de_horario=0x7f040005;
-        public static final int fora_de_horario_matricula=0x7f040006;
-        public static final int fora_do_dia_normal_de_aula=0x7f040007;
-        public static final int hoje_nao_e_dia_normal_de_aula=0x7f040008;
-        public static final int parabens_mes=0x7f040009;
-        public static final int parabens_pontualidade=0x7f04000a;
-        public static final int parabens_semana=0x7f04000b;
-        public static final int voce_esta_atrasado=0x7f04000c;
-        public static final int voce_faltou=0x7f04000d;
+        public static final int falta_justificada=0x7f040005;
+        public static final int fora_de_horario=0x7f040006;
+        public static final int fora_de_horario_matricula=0x7f040007;
+        public static final int fora_do_dia_normal_de_aula=0x7f040008;
+        public static final int hoje_nao_e_dia_normal_de_aula=0x7f040009;
+        public static final int parabens_mes=0x7f04000a;
+        public static final int parabens_pontualidade=0x7f04000b;
+        public static final int parabens_semana=0x7f04000c;
+        public static final int voce_esta_atrasado=0x7f04000d;
+        public static final int voce_faltou=0x7f04000e;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;

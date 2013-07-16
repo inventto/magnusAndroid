@@ -30,7 +30,7 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		voltarTelaPrincipal();
 		
 		String urlFoto = getIntent().getExtras().getString("FOTO");
-		Drawable drawable = LoadImageFromWebOperations("http://magnus.invent.to" + urlFoto);
+		Drawable drawable = LoadImageFromWebOperations(GlobalActivity.ADDRESS + urlFoto);
 		ImageView iv = ((ImageView)findViewById(R.id.foto));
 		iv.setImageDrawable(drawable);
 		
@@ -107,6 +107,9 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		}
 		if (musicName.equals("aula_de_reposicao")) {
 			mp = MediaPlayer.create(this, R.raw.aula_de_resposicao);
+		}
+		if (musicName.equals("justificou_aula_passada")) {
+			mp = MediaPlayer.create(this, R.raw.falta_justificada);
 		}
 		return mp;
 	}
