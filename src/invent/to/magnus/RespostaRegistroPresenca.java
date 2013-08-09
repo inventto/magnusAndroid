@@ -31,12 +31,22 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 	}
 
 	@Override
-	protected Void doInBackground(String... params) {		
-		HttpClient httpclient = new DefaultHttpClient();		
-		HttpPost httppost = new HttpPost(GlobalActivity.ADDRESS + "/registro_presenca/registro_android");
+	protected Void doInBackground(String... params) {			
+		String codigo = params[0];
+		String url = GlobalActivity.ADDRESS;
+		
+		if (codigo.charAt(0) == '9') { 			
+			url += "/registro_presenca/registrar_ponto_android";
+		} else {
+			url += "/registro_presenca/registro_android";	
+		}
+		
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpPost httppost = new HttpPost(url);
+		
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("codigo", params[0]));
+			nameValuePairs.add(new BasicNameValuePair("codigo", codigo));
 
 			if (params.length == 2) {
 				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));			
@@ -69,7 +79,8 @@ public class RespostaRegistroPresenca extends AsyncTask <String, String, Void>{
 				intent.putExtra("FOTO", mensagens[2]);
 				intent.putExtra("NOTICE", mensagens[3]);
 				intent.putExtra("ERROR", mensagens[4]);
-				intent.putExtra("MENSAGEM", mensagens[5]);
+				intent.putExtra("CHEGADA", mensagens[5]);
+				intent.putExtra("MENSAGEM", mensagens[6]);
 				context.startActivity(intent);
 			}
 

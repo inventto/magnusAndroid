@@ -37,7 +37,9 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		String saudacao = getIntent().getExtras().getString("SAUDACAO");
 		((TextView)findViewById(R.id.saudacao)).setText(saudacao);
 		
-		((TextView)findViewById(R.id.horario)).setText("Chegada: " + new SimpleDateFormat("HH:mm").format(new GregorianCalendar().getTime()) + "\n");
+		String chegada = getIntent().getExtras().getString("CHEGADA");
+		String msgChegada = (chegada.charAt(0) == '1') ? "Chegada: " : "Saída: ";
+		((TextView)findViewById(R.id.horario)).setText(msgChegada + new SimpleDateFormat("HH:mm").format(new GregorianCalendar().getTime()) + "\n");
 		
 		String notice = getIntent().getExtras().getString("NOTICE");
 		((TextView)findViewById(R.id.notice)).setText(notice.replace("<br/>", "\n"));
@@ -111,6 +113,21 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		if (musicName.equals("justificou_aula_passada")) {
 			mp = MediaPlayer.create(this, R.raw.falta_justificada);
 		}
+		if (musicName.equals("bom_dia")) {
+			mp = MediaPlayer.create(this, R.raw.bom_dia);
+		}
+		if (musicName.equals("boa_tarde")) {
+			mp = MediaPlayer.create(this, R.raw.boa_tarde);
+		}
+		if (musicName.equals("boa_noite")) {
+			mp = MediaPlayer.create(this, R.raw.boa_noite);
+		}
+		if (musicName.equals("tenha_boa_tarde")) {
+			mp = MediaPlayer.create(this, R.raw.tenha_boa_tarde);
+		}
+		if (musicName.equals("tenha_boa_noite")) {
+			mp = MediaPlayer.create(this, R.raw.tenha_boa_noite);
+		}		
 		return mp;
 	}
 	private void voltarTelaPrincipal(){
