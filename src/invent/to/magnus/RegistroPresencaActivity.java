@@ -65,8 +65,10 @@ public class RegistroPresencaActivity extends GlobalActivity {
 				currentTrack = currentTrack + 1;
 				if (currentTrack < mensagens.length) {
 					mp = getMusica(mensagens[currentTrack]);
-					mp.start();
-					mp.setOnCompletionListener(onCompletionListener());
+					if (mp != null){
+					  mp.start();
+					  mp.setOnCompletionListener(onCompletionListener());
+					}
 				}
 			}
 		};
@@ -76,8 +78,10 @@ public class RegistroPresencaActivity extends GlobalActivity {
 	private void executaMensagensSonora(final String[] mensagens){
 		MediaPlayer mp = null;
 		mp = getMusica(mensagens[currentTrack]);
-		mp.start();
-		mp.setOnCompletionListener(onCompletionListener());
+		if (mp != null){
+		  mp.start();
+		  mp.setOnCompletionListener(onCompletionListener());
+		}
 	}
 		
 	private MediaPlayer getMusica(String musicName) {
