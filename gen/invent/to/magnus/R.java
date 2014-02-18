@@ -70,10 +70,11 @@ public final class R {
         public static final int parabens_mes=0x7f04000d;
         public static final int parabens_pontualidade=0x7f04000e;
         public static final int parabens_semana=0x7f04000f;
-        public static final int tenha_boa_noite=0x7f040010;
-        public static final int tenha_boa_tarde=0x7f040011;
-        public static final int voce_esta_atrasado=0x7f040012;
-        public static final int voce_faltou=0x7f040013;
+        public static final int standby=0x7f040010;
+        public static final int tenha_boa_noite=0x7f040011;
+        public static final int tenha_boa_tarde=0x7f040012;
+        public static final int voce_esta_atrasado=0x7f040013;
+        public static final int voce_faltou=0x7f040014;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;

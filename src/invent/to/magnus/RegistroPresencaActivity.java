@@ -13,6 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -130,21 +133,14 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		}		
 		return mp;
 	}
+
 	private void voltarTelaPrincipal(){
-		TimerTask ttask = new TimerTask() {
-			
-			@Override
+		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				finishScreen();
+				RegistroPresencaActivity.this.finish();
+				System.gc();
 			}
-		};
-		
-		Timer t = new Timer();
-	    t.schedule(ttask, 13000);
-	}
-	
-	private void finishScreen() {
-        this.finish();
+		}, 10000);
     }
 	
 	private Drawable LoadImageFromWebOperations(String url){
@@ -153,9 +149,11 @@ public class RegistroPresencaActivity extends GlobalActivity {
         Drawable d = Drawable.createFromStream(is, "src name");
         return d;
       }catch (Exception e) {
-        System.out.println("==>LoadImageException" + e);
-        return null;
+    	  Log.d("exception", e.getMessage());
+      }catch (Error e1) {
+    	  Log.d("error", e1.getMessage());
       }
+      return null;
     }
 	
 	@Override
