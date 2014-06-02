@@ -123,7 +123,6 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		
 		if (!codigo.equals("") && Long.parseLong(codigo) > 0) {
 			if (wifiIsConnected()) {
-				verifAlunosRegistrados();
 				setEnabledButton(false);
 				new RespostaRegistroPresenca(this).execute(codigo);
 			} else {
@@ -134,18 +133,7 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		}
 	}
 	
-	private void verifAlunosRegistrados() {
-		try {
-			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
-			List<Aluno> listAluno = alunoDao.queryForAll();
-			for(Aluno aluno : listAluno){
-				new RespostaRegistroPresenca(this).execute(aluno.getCodigo(), String.valueOf(aluno.getDataRegistro().getTime()));
-				alunoDao.delete(aluno);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	
 		
 	public void showInfo(View v) {
 		final Dialog dialog = new Dialog(this);
@@ -190,20 +178,4 @@ public class MagnusPresencaActivity extends GlobalActivity {
 			}
 		}, 50);
 	}
-
-	/* Exemplos:
-	 * Lugar lugar = new lugar();
-	lugar.nome = "Aracaju";
-	// INSERT INTO lugar VALUES ('Aracaju');
-	lugarDao.create(lugar);
-	lugar.nome = "Sergipe";
-	// UPDATE lugar SET nome = 'Sergipe' WHERE id = 1;
-	lugarDao.update(lugar);
-	// DELETE FROM lugar WHERE id = 1;
-	lugarDao.delete(lugar);
-	// SELECT * FROM lugar;
-	lugarDao.queryForAll();
-	// SELECT * FROM Lugar where id = lugar.id;
-	lugarDao.queryForId(lugar);
-	 */
 }

@@ -74,7 +74,7 @@ public class RegistroPresencaActivity extends GlobalActivity {
 		};
 		return comp; 
 	}
-	
+		
 	private void executaMensagensSonora(final String[] mensagens){
 		MediaPlayer mp = null;
 		mp = getMusica(mensagens[currentTrack]);
