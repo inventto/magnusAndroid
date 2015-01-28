@@ -43,6 +43,7 @@ public class VerifyVersionAndUpdate {
 			p = context.getPackageManager().getPackageInfo(
 					context.getPackageName(), 0);
 		} catch (NameNotFoundException e) {
+			e.printStackTrace();
 		}
 		if (p != null && versionCode > p.versionCode) {
 			isInstalled = true;

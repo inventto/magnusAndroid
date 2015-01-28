@@ -70,8 +70,13 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
 			Log.i("=======[", response);
 
 			String mensagens[] = response.split(";");
+
+			System.out.println("LENGTH: " + mensagens.length);
+
 			if (mensagens.length == 1) {
 				mensagens = mensagens[0].replace("|", ";").split(";");
+				System.out.println("Messages" + mensagens);
+				System.out.println("Messages[0]: " + mensagens[0]);
 				showMessage(mensagens[0]);
 				executaMensagemSonora(mensagens[1]);
 			} else {
@@ -104,12 +109,12 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
 	}
 
 	protected void showMessage(final String value) {
-		// ((Activity)context).runOnUiThread(new Runnable() {
-		// @Override
-		// public void run() {
-		Toast.makeText(context, value, Toast.LENGTH_LONG).show();
-		((MagnusPresencaActivity)context).setEnabledButton(true);
-		// }
-		// });
+		((Activity)context).runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(context, value, Toast.LENGTH_LONG).show();
+				((MagnusPresencaActivity)context).setEnabledButton(true);
+			}
+		});
 	}
 }

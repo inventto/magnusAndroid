@@ -8,6 +8,7 @@ import java.util.Date;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -154,10 +155,19 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		aluno.setDataRegistro(new Date());
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
-			Toast.makeText(this, "Não foi possivel conectar na internet, a presença foi salva no celular!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Não foi possivel conectar na internet, a presença foi salva no aparelho android!", Toast.LENGTH_LONG).show();
 			alunoDao.create(aluno);
+			executeMenssagemPresencaRegistrada();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void executeMenssagemPresencaRegistrada(){
+		MediaPlayer mediaPlayer = null;
+		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.presenca_offline);
+		if (mediaPlayer != null){
+		  mediaPlayer.start();
 		}
 	}
 
