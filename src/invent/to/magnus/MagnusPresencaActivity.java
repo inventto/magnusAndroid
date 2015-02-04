@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -39,7 +40,6 @@ public class MagnusPresencaActivity extends GlobalActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
 		if (Wifi.testConnection()) {
 			new EnviarPresencasOffline().enviarPresencasOffline(getApplicationContext());
 		} else {
@@ -150,9 +150,11 @@ public class MagnusPresencaActivity extends GlobalActivity {
 	}
 
 	private void inserirAluno(String codigo) {
+		Date data = new Date();
 		Aluno aluno = new Aluno();
 		aluno.setCodigo(codigo);
-		aluno.setDataRegistro(new Date());
+		aluno.setDataRegistro(data);
+		Log.i("DATA REGISTRO: ", data.toString());
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
 			Toast.makeText(this, "Não foi possivel conectar na internet, a presença foi salva no aparelho android!", Toast.LENGTH_LONG).show();

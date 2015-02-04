@@ -23,7 +23,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
+public class RespostaRegistroPresenca extends AsyncTask<String, String, Boolean> {
 
 	private Context context;
 
@@ -32,7 +32,7 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
 	}
 
 	@Override
-	protected Void doInBackground(String... params) {
+	protected Boolean doInBackground(String... params) {
 		String codigo = params[0];
 		String url = GlobalActivity.ADDRESS;
 
@@ -51,6 +51,7 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
 
 			if (params.length == 2) {
 				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));
+				Log.i("TIME MILLIS", params[1]);
 			}
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -91,13 +92,15 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Void> {
 				context.startActivity(intent);
 			}
 
+			return true;
+
 		} catch (ClientProtocolException e) {
 			showMessage("==[ClientProtocolEx:\n" + e.getMessage());
 		} catch (IOException e) {
 			showMessage("==[IOEx:\n" + e.getMessage());
 		}
 
-		return null;
+		return false;
 	}
 
 	private void executaMensagemSonora(String musicName) {
