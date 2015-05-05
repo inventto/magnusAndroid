@@ -86,6 +86,7 @@ public final class R {
         public static final int notice=0x7f060005;
         public static final int registrar=0x7f060008;
         public static final int saudacao=0x7f060004;
+        public static final int sem_wifi_presenca_salva=0x7f060009;
         public static final int title_activity_registro_presenca=0x7f060003;
     }
     public static final class style {

@@ -10,5 +10,6 @@
     <string name="error">error</string>
     <string name="horario">hora_de_chegada</string>
     <string name="registrar">Registrar</string>
+    <string name="sem_wifi_presenca_salva">Não foi possivel conectar na internet, a presença foi salva no aparelho android!</string>
 
 </resources>

@@ -3,11 +3,21 @@ package invent.to.magnus;
 import invent.to.magnus.entity.Aluno;
 import invent.to.magnus.helper.ORMLiteHelper;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.net.UnknownServiceException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
+import android.R.integer;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -41,7 +51,7 @@ public class MagnusPresencaActivity extends GlobalActivity {
 	protected void onResume() {
 		super.onResume();
 		if (Wifi.testConnection()) {
-			new EnviarPresencasOffline().enviarPresencasOffline(getApplicationContext());
+			new EnviarPresencasOffline().enviarPresencasOffline(this);
 		} else {
 			Toast.makeText(this, "Não há conexão com a internet.\nAssim que a mesma for estabelecida registraremos sua presença!", Toast.LENGTH_LONG).show();
 		}
@@ -122,10 +132,12 @@ public class MagnusPresencaActivity extends GlobalActivity {
 		EditText et = (EditText)findViewById(R.id.codigo);
 		String codigo = et.getText().toString();
 		et.setText("");
+		
 
 		if (!codigo.equals("") && Long.parseLong(codigo) > 0) {
-			if (Wifi.testConnection()) {
+			if (Wifi.testConnection() && checkConexaoComServidor() != false) {
 				setEnabledButton(false);
+				new EnviarPresencasOffline().enviarPresencasOffline(this);
 				new RespostaRegistroPresenca(this).execute(codigo);
 			} else {
 				inserirAluno(codigo);
@@ -134,6 +146,22 @@ public class MagnusPresencaActivity extends GlobalActivity {
 			Toast.makeText(this, "Código do aluno inválido!", Toast.LENGTH_LONG).show();
 		}
 	}
+	public Boolean checkConexaoComServidor(){
+		try {
+			URL url = new URL(GlobalActivity.ADDRESS);
+			HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+			huc.connect();
+			huc.disconnect();
+			return true;
+		} catch (UnknownHostException e) {
+			System.out.println("EXCEPTION SOCKET: " + e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOEXCEPTION SOCKET: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}	
 
 	public void showInfo(View v) {
 		final Dialog dialog = new Dialog(this);
@@ -150,27 +178,47 @@ public class MagnusPresencaActivity extends GlobalActivity {
 	}
 
 	private void inserirAluno(String codigo) {
+		String cumprimento = null;
+		String[] horario = null;
+		int hora = 0;
+		
 		Date data = new Date();
 		Aluno aluno = new Aluno();
+		
 		aluno.setCodigo(codigo);
 		aluno.setDataRegistro(data);
-		Log.i("DATA REGISTRO: ", data.toString());
+		String formathorasMinutos = new SimpleDateFormat("HH:mm").format(data);
+		
+		horario = formathorasMinutos.split(":");
+		hora = Integer.parseInt(horario[0]);
+		cumprimento = getSaudacao(hora);
+		
 		try {
 			Dao<Aluno, Integer> alunoDao = ORMLiteHelper.getInstance(this).getAlunoDao();
-			Toast.makeText(this, "Não foi possivel conectar na internet, a presença foi salva no aparelho android!", Toast.LENGTH_LONG).show();
 			alunoDao.create(aluno);
-			executeMenssagemPresencaRegistrada();
+			
+			Intent intent = new Intent(this, RegistroPresencaActivity.class);
+			intent.putExtra("SAUDACAO", cumprimento);
+			intent.putExtra("CHEGADA", formathorasMinutos);
+			intent.putExtra("MENSAGEM", "sem_wifi_presenca_salva");
+			intent.putExtra("NOTICE", "Presença registrada com sucesso!!");
+			intent.putExtra("ERROR", getString(R.string.sem_wifi_presenca_salva));
+			this.startActivity(intent);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void executeMenssagemPresencaRegistrada(){
-		MediaPlayer mediaPlayer = null;
-		mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.presenca_offline);
-		if (mediaPlayer != null){
-		  mediaPlayer.start();
+	private String getSaudacao(int hora) {
+		String saudacao = null;
+		if(hora < 12){
+			saudacao = "Bom Dia";
+		} else if (hora > 12 && hora < 18) {
+			saudacao = "Boa Tarde";
+		} else {
+			saudacao = "Boa Noite";
 		}
+		return saudacao;
 	}
 
 	private boolean wifiIsConnected() {

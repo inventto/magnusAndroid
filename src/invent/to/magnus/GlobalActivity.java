@@ -12,7 +12,7 @@ import android.view.WindowManager;
 public class GlobalActivity extends Activity {
 
 	public static final boolean TESTING = false;
-	public static final String ADDRESS = TESTING ? "http://192.168.25.240:3000" : "http://192.168.25.112:3000";
+	public static final String ADDRESS = TESTING ? "http://192.168.25.240:3000" : "http://magnus.invent.to";
 	
 	long lastActivity;
 	CountDownTimer verificaAtividade;

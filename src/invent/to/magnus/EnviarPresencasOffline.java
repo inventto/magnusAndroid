@@ -23,18 +23,15 @@ public class EnviarPresencasOffline {
 		List<Aluno> alunos = buscarAlunosLocal(context);
 		for (Aluno aluno : alunos) {
 			try {
-				Log.i("GET DATA REGISTRO[", aluno.getDataRegistro().toString());
-				Log.i("GET DATA REGISTRO VALUE OF[", String.valueOf(aluno.getDataRegistro()));
-				Log.i("GET DATA REGISTRO Get Time[", String.valueOf(aluno.getDataRegistro().getTime()));
 				AsyncTask<String, String, Boolean> presenca = new RespostaRegistroPresenca(context).execute(aluno.getCodigo(), String.valueOf(aluno.getDataRegistro().getTime()));
 				Boolean p = presenca.get();
-				if (p != null && p.booleanValue() == true) {
-					Log.i(">>>>>>>>>>>> DELETE", aluno.getCodigo());
+				if (p != null && p.booleanValue()) {
 					alunoDao.delete(aluno);
+				} else {
+					Log.e("ERROR >>>>>>>", aluno.getCodigo());
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			} catch (Exception e) {
+				Log.e("ERROR >>>>>>>", aluno.getCodigo() + "-" + e.getMessage());
 				e.printStackTrace();
 			}
 		}

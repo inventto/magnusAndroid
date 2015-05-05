@@ -44,62 +44,62 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Boolean>
 
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpPost httppost = new HttpPost(url);
-
+		
 		try {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("codigo", codigo));
 
 			if (params.length == 2) {
 				nameValuePairs.add(new BasicNameValuePair("time_millis", params[1]));
-				Log.i("TIME MILLIS", params[1]);
 			}
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse httpResponse = httpclient.execute(httppost);
 
-			if (params.length == 2)
-				return null;
-
 			HttpEntity responseEntity = httpResponse.getEntity();
+			
 
 			String response = null;
 			if (responseEntity != null) {
 				response = EntityUtils.toString(responseEntity);
 			}
 
-			Log.i("=======[", response);
-
-			String mensagens[] = response.split(";");
-
-			System.out.println("LENGTH: " + mensagens.length);
-
-			if (mensagens.length == 1) {
-				mensagens = mensagens[0].replace("|", ";").split(";");
-				System.out.println("Messages" + mensagens);
-				System.out.println("Messages[0]: " + mensagens[0]);
-				showMessage(mensagens[0]);
-				executaMensagemSonora(mensagens[1]);
-			} else {
-				Intent intent = new Intent(context, RegistroPresencaActivity.class);
-				intent.putExtra("SAUDACAO", mensagens[0]);
-				intent.putExtra("NOME", mensagens[1]);
-				intent.putExtra("FOTO", mensagens[2]);
-				intent.putExtra("NOTICE", mensagens[3]);
-				intent.putExtra("ERROR", mensagens[4]);
-				intent.putExtra("CHEGADA", mensagens[5]);
-				intent.putExtra("MENSAGEM", mensagens[6]);
-				context.startActivity(intent);
+			
+			if (params.length == 1) { // se está autenticando na tela e possui conexão com a internet
+	
+				String mensagens[] = response.split(";");
+	
+				System.out.println("LENGTH: " + mensagens.length);
+	
+				if (mensagens.length == 1) {
+					mensagens = mensagens[0].replace("|", ";").split(";");
+					System.out.println("Messages" + mensagens);
+					System.out.println("Messages[0]: " + mensagens[0]);
+					showMessage(mensagens[0]);
+					executaMensagemSonora(mensagens[1]);
+				} else {
+					Intent intent = new Intent(context, RegistroPresencaActivity.class);
+					intent.putExtra("SAUDACAO", mensagens[0]);
+					intent.putExtra("NOME", mensagens[1]);
+					intent.putExtra("FOTO", mensagens[2]);
+					intent.putExtra("NOTICE", mensagens[3]);
+					intent.putExtra("ERROR", mensagens[4]);
+					intent.putExtra("CHEGADA", mensagens[5]);
+					intent.putExtra("MENSAGEM", mensagens[6]);
+					context.startActivity(intent);
+				}
 			}
-
 			return true;
-
 		} catch (ClientProtocolException e) {
 			showMessage("==[ClientProtocolEx:\n" + e.getMessage());
+			e.printStackTrace();
 		} catch (IOException e) {
-			showMessage("==[IOEx:\n" + e.getMessage());
+			showMessage("Erro de Conexão: Não encontrado o sinal do servidor.");
+			Log.e("==[IOEx:\n", e.getMessage());
+			e.printStackTrace();
 		}
-
+		
 		return false;
 	}
 
@@ -112,12 +112,16 @@ public class RespostaRegistroPresenca extends AsyncTask<String, String, Boolean>
 	}
 
 	protected void showMessage(final String value) {
-		((Activity)context).runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(context, value, Toast.LENGTH_LONG).show();
-				((MagnusPresencaActivity)context).setEnabledButton(true);
-			}
-		});
+		if(context instanceof Activity) {
+			((Activity)context).runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Toast.makeText(context, value, Toast.LENGTH_LONG).show();
+					((MagnusPresencaActivity)context).setEnabledButton(true);
+				}
+			});
+		} else {
+			Log.e("RESPOSTA REGISTRO PRESENÇA", "Contexto não activity");
+		}
 	}
 }
